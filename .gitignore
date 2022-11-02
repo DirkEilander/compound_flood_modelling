@@ -130,7 +130,10 @@ dmypy.json
 
 
 # 
+.vscode/*
 1_data/*
 3_models/CMF/*
 3_models/SFINCS/*
+3_models/SFINCS2/*
 4_results/*
+4_results/rebuttal/*

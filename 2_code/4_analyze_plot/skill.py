@@ -3,8 +3,8 @@ import xarray as xr
 
 
 def skill(da_sim, da_obs, da_msk, hmin=0.15):
-    sim = da_sim > hmin
-    obs = da_obs > 0  # assume obs is binary mask of extent
+    sim = (da_sim > hmin).where(~da_msk, False)
+    obs = (da_obs > 0).where(~da_msk, False)  # assume obs is binary mask of extent
 
     ds = xr.Dataset(
         dict(
@@ -12,7 +12,7 @@ def skill(da_sim, da_obs, da_msk, hmin=0.15):
             false_neg=np.logical_and(~sim, obs),
             false_pos=np.logical_and(sim, ~obs),
         )
-    ).where(~da_msk, False)
+    )
 
     ntot = np.logical_or(sim, obs).where(~da_msk, False).sum(("x", "y"))
     nobs = obs.where(~da_msk, False).sum(("x", "y"))
